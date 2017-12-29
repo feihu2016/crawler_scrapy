@@ -19,24 +19,31 @@ NEWSPIDER_MODULE = 'ganji_crawler.spiders'
 #USER_AGENT = 'ganji_crawler (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-#CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 2
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-#DOWNLOAD_DELAY = 3
+DOWNLOAD_DELAY = 3
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-#COOKIES_ENABLED = False
+COOKIES_ENABLED = False
 
-# Disable Telnet Console (enabled by default)
-#TELNETCONSOLE_ENABLED = False
+# 禁止重定向 Disable Telnet Console (enabled by default)
+TELNETCONSOLE_ENABLED = False
+RETRY_ENABLED = True
+
+# 下载超时 15 秒
+DOWNLOAD_TIMEOUT = 15
+
+# 报错级别
+# LOG_LEVEL = 'INFO'
 
 # Override the default request headers:
 #DEFAULT_REQUEST_HEADERS = {
@@ -52,9 +59,12 @@ ROBOTSTXT_OBEY = True
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'ganji_crawler.middlewares.MyCustomDownloaderMiddleware': 543,
-#}
+#543: 请求头user-agent信息
+#643: 配置完 selenium+Phantomjs 可解析页面js
+DOWNLOADER_MIDDLEWARES = {
+    'ganji_crawler.middlewares.CustomUserAgentMiddleware': 543,
+    #'ganji_crawler.middlewares.CustomJavaScriptMiddleware': 643,
+}
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
@@ -64,9 +74,9 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'ganji_crawler.pipelines.GanjiCrawlerPipeline': 300,
-#}
+ITEM_PIPELINES = {
+    'ganji_crawler.pipelines.GanjiCrawlerPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
